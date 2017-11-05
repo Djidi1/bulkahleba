@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="org.getmilk.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>GetMilk</name>
+    <description>
+       Список покупок. Где угодно, когда угодно и с кем угодно.
+    </description>
+    <author email="djidi@mail.ru" href="https://app.getmilk.ru">
+        djidi
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="ServiceWorker" value="service-worker.js" />
+    <preference name="CacheCordovaAssets" value="false" />
+    <engine name="android" />
+    <engine name="ios" spec="^4.3.1" />
+    <engine name="browser" spec="^5.0.1" />
+    <plugin name="cordova-plugin-statusbar" spec="^2.2.3" />
+    <plugin name="phonegap-plugin-service-worker" spec="git+https://github.com/phonegap/phonegap-plugin-service-worker.git" />
+    <plugin name="cordova-plugin-browsersync" spec="^1.1.0" />
+    <plugin name="org.apache.cordova.plugin.cache" spec="https://github.com/tiltshiftfocus/cordova-plugin-cache.git" />
+</widget>

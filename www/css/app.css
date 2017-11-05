@@ -1,0 +1,6 @@
+/* =========
+Your custom styles go here
+ ========= */
+.item-completed .item-title {
+    text-decoration: line-through;
+}
