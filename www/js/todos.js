@@ -57,7 +57,8 @@ function addTodo(todo) {
         if (todo_items[i] !== '') {
             let todo_new = {};
             todo_new.id = Math.floor(Math.random() * 10000);
-            todo_new.title = todo_items[i];
+            todo_new.title = todo_items[i].split(':')[0].trim();
+            todo_new.quantity = todo_items[i].split(':')[1].trim() || '';
             todo_new.category = todo.category;
             todo_new.desc = todo.desc;
             todo_new.highlight = todo.highlight;

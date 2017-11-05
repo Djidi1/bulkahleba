@@ -99,12 +99,23 @@ Vue.component('page-pending', {
               completed: false
           };
           if (!this.title) {
-              this.$f7.alert('Что вы хотите купить?', 'Необходимо название');
+              this.$f7.alert('Необходимо написать название покупки.', 'Что вы хотите купить?');
           } else {
               addTodo(this.item);
           }
           this.title = '';
+      },
+      addHowMany () {
+          if (!this.title) {
+              this.$f7.alert('Сначала необходимо написать название покупки, а потом количество.', 'Что вы хотите купить?');
+          } else {
+              if (this.title.indexOf(':') === -1) {
+                  this.title += ' : ';
+              }
+          }
+          this.$refs.todo_input.$el.children[0].focus();
       }
+
   }
 });
 

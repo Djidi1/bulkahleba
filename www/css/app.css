@@ -1,6 +1,52 @@
 /* =========
 Your custom styles go here
  ========= */
+.item-input-row {
+    width: 100%;
+}
+
+/* Зачеркиваем купленное */
 .item-completed .item-title {
     text-decoration: line-through;
+}
+
+
+/* Стиль блока покупок */
+.list-block.comleted-block {
+    margin: 0;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    background: #efeff6;
+    color: #6d6d72;
+}
+.list-block.comleted-block ul {
+    background: transparent;
+}
+.list-block.comleted-block ul:before, .list-block.comleted-block ul:after{
+    display: none;
+}
+.page-content {
+    background: #ffffff;
+}
+
+/* Разделитель покупок */
+.holder {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 5px;
+}
+.smallLine {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+}
+.smallLine1 {
+    background: linear-gradient(45deg, #efeff5, #efeff5 49%, #0044d6 49%, #ffffff 51%);
+}
+.smallLine2 {
+    background: linear-gradient(-45deg, #efeff5, #efeff5 49%, #0044d6 49%, transparent 51%);
+}
+.smallLine {
+    background-size: 10px 10px;
 }

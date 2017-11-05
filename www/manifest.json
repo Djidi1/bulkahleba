@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,  
-  "name": "Todo List", 
-  "version": "1.0.0",
-  "short_name": "TODO's", 
+  "name": "БулкаХлеба",
+  "version": "0.1.0",
+  "short_name": "БулкаХлеба",
   "icons": [{
     "src": "img/icons/icon-128x128.png",
       "sizes": "128x128",

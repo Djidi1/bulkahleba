@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Security-Policy"
           content="default-src 'self' data: gap:  ws: 'unsafe-inline' https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline' ws://*; style-src 'self' 'unsafe-inline'; media-src *; connect-src *; img-src * data:">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-    <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="gray">
+    <link rel="mask-icon" href="img/favicons/safari-pinned-tab.svg" color="gray">
 
     <!-- Color of status bar, address bar, header bar color for Android -->
     <meta name="theme-color" content="#2196F3">
@@ -12,10 +12,10 @@
     <!-- PWA - Add to home screen settings for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Todo List">
+    <meta name="apple-mobile-web-app-title" content="БулкаХлеба">
 
     <!-- Need to handle all desired sizes for the following two (see Apple Docs for dimensions) -->
-    <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" href="img/favicons/apple-touch-icon.png">
 
     <link rel="apple-touch-startup-image" href="img/Default-Portrait.png">
     <!--<link rel="apple-touch-startup-image" href="img/Default-Portrait-736@3x.png" sizes="1242x2148">-->
@@ -23,7 +23,7 @@
     <meta name="msapplication-tap-highlight" content="no">
 
     <!-- PWA - Pinned Tile for Windows -->
-    <meta name="msapplication-TileImage" content="img/icons/mstile-150x150.png">
+    <meta name="msapplication-TileImage" content="img/favicons/mstile-150x150.png">
     <meta name="msapplication-TileColor" content="#2F3BA2">
 
     <style>
@@ -47,7 +47,7 @@
     <title>БулкаХлеба</title>
 
     <!-- See js/init-styles.jswhere we load F7 style sheets based on platform -->
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/app.css?v=0.2">
     <link rel="stylesheet" href="css/framework7-icons.css">
 
 </head>
@@ -91,7 +91,9 @@
                     <!--<f7-link icon-f7="bars" open-panel="side-panel"></f7-link>-->
                     <f7-link icon="icon-bars" open-panel="side-panel"></f7-link>
                 </f7-nav-left>
-                <f7-nav-center>БулкаХлеба</f7-nav-center>
+                <f7-nav-center>
+                    <img src="img/logo_title.png" height="34"/>
+                </f7-nav-center>
                 <f7-nav-right>
                     <f7-link icon-f7="add" open-popup="#todo-popup"></f7-link>
                 </f7-nav-right>
@@ -140,39 +142,55 @@
 <!-- Pending Todos Page Template -->
 <template id="page-pending">
     <f7-page>
-        <f7-block-title>{{ title_block }}</f7-block-title>
-        <f7-block>
+
             <f7-list>
                 <f7-list-item>
-                    <f7-input type="text" v-model="title" @keyup.enter="addNewTodo()" placeholder="Название"/>
+                    <f7-grid no-gutter class="item-input-row">
+                        <f7-col width="70">
+                            <f7-input type="text" v-model="title" @keyup.enter="addNewTodo()" ref="todo_input" placeholder="Название : количество " />
+                        </f7-col>
+                        <f7-col width="15">
+                            <f7-button @click="addHowMany()">:123</f7-button>
+                        </f7-col>
+                        <f7-col width="15">
+                            <f7-button @click="addNewTodo()"><i class="icon f7-icons">check</i></f7-button>
+                        </f7-col>
+                    </f7-grid>
                 </f7-list-item>
             </f7-list>
-            <!-- <img src="img/logo.png" width="320" height="240">-->
+            <f7-block-title>{{ title_block }}</f7-block-title>
+             <!--<img src="img/logo.png" width="320" height="240">-->
             <f7-list v-if="todos.length > 0">
                 <f7-list-item v-for="(todo, key) in todos" :key="key" v-if="displayItem(todo)"
                               :checked="(todo.completed ? true : false)" :data-index="key"
-                              @click="onToggle(todo,key)" :title="(todo.urgent ? '<b><font color=red>!!</font></b> ' + todo.title : todo.title)"
+                              @click="onToggle(todo,key)"
+                              :title="(todo.urgent ? '<b><font color=red>!!</font></b> ' + todo.title : todo.title)"
+                              :after="((typeof todo.quantity != 'undefined' && todo.quantity != '') ? '<span class=\'badge color-pink\'>'+todo.quantity+'</span>' : '')"
                               :class="[(todo.completed ? 'item-completed' : '') + ' ' + (todo.highlight ? 'bg-yellow' : '')]" swipeout checkbox>
                     <f7-swipeout-actions>
                         <!--<f7-swipeout-button close @click="onItemEdited(todo)" color="green">Изменить</f7-swipeout-button>-->
-                        <f7-swipeout-button close @click="onItemDeleted(todo)" color="red">Удалить</f7-swipeout-button>
+                        <f7-swipeout-button close @click="onItemDeleted(todo)" color="red"><i class="icon f7-icons">trash</i></f7-swipeout-button>
                     </f7-swipeout-actions>
                 </f7-list-item>
             </f7-list>
-
-            <f7-list v-if="todos.length > 0">
+            <div class="holder">
+                <div class="smallLine smallLine1"></div>
+                <div class="smallLine smallLine2"></div>
+            </div>
+            <f7-list v-if="todos.length > 0" class="comleted-block">
                 <f7-list-item v-for="(todo, key) in todos" :key="key" v-if="displayItemCompleted(todo)"
                               :checked="(todo.completed ? true : false)" :data-index="key"
-                              @click="onToggle(todo,key)" :title="(todo.urgent ? '<b><font color=red>!!</font></b> ' + todo.title : todo.title)"
+                              @click="onToggle(todo,key)"
+                              :title="(todo.urgent ? '<b><font color=red>!!</font></b> ' + todo.title : todo.title)"
+                              :after="((typeof todo.quantity != 'undefined' && todo.quantity != '') ? '<span class=badge>'+todo.quantity+'</span>' : '')"
                               :class="[(todo.completed ? 'item-completed' : '') + ' ' + (todo.highlight ? 'bg-yellow' : '')]" swipeout checkbox>
                     <f7-swipeout-actions>
                         <!--<f7-swipeout-button close @click="onItemEdited(todo)" color="green">Edit</f7-swipeout-button>-->
-                        <f7-swipeout-button close @click="onItemDeleted(todo)" color="red">Удалить</f7-swipeout-button>
+                        <f7-swipeout-button close @click="onItemDeleted(todo)" color="red"><i class="icon f7-icons">trash</i></f7-swipeout-button>
                     </f7-swipeout-actions>
                 </f7-list-item>
             </f7-list>
 
-        </f7-block>
     </f7-page>
 </template>
 
@@ -186,6 +204,7 @@
                               :checked="(todo.completed ? true : false)"
                               v-if="displayItem(todo)" @click="onToggle(todo, key)"
                               :title="(todo.urgent ? '<b><font color=red>!!</font></b> ' + todo.title : todo.title)"
+                              :after="((typeof todo.quantity != 'undefined' && todo.quantity != '') ? '<span class=badge>'+todo.quantity+'</span>' : '')"
                               :class="[(todo.completed ? 'item-completed' : '') + ' ' + (todo.highlight ? 'bg-yellow' : '')]" swipeout checkbox>
                     <f7-swipeout-actions>
                         <!--<f7-swipeout-button close @click="onItemEdited(todo)" open-popup color="green">Edit</f7-swipeout-button>-->
@@ -232,8 +251,8 @@
 <!--<script src="lib/vue/vue.js"></script>-->
 <script src="lib/framework7-vue/framework7-vue.min.js"></script>
 <script src="js/init-styles.js"></script>
-<script src="js/todos.js"></script>
-<script src="js/app.js"></script>
+<script src="js/todos.js?v=0.1"></script>
+<script src="js/app.js?v=0.2"></script>
 <!--<script src="js/bundle.js"></script>-->
 
 <noscript>
