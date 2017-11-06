@@ -12,7 +12,7 @@ self.addEventListener('fetch', function(event) {
   console.log('Network intercept example - checking URL for png ', event.request.url);
   if (/\.png$/.test(event.request.url)) {
     event.respondWith(
-        fetch('http://addolo.com/wp-content/uploads/2017/01/90-stunning-silly-cat-pictures-image-inspirations-1280x960-wallpapersother-wallpapers-with-captions.jpg', 
+        fetch('https://cdn.framework7.io/i/logo-new.png',
         { mode: 'no-cors'}).then(function(response) {
             console.log("Response from network intercept " + response);
             return response;

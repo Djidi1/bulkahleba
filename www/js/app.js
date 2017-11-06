@@ -20,8 +20,6 @@ window.store = {
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue);
 
-let myApp = new Framework7();
-
 // Init Page Components
 Vue.component('page-tabs', {
   template: '#page-tabs',
@@ -240,13 +238,7 @@ let myVue = new Vue({
       filterCategory (cat) {
           this.isActive = true;
           window.store.changeCategory(cat);
-      },
-      openAbout () {
-          myApp.popup('.about-popup');
-      },
-      openLogin () {
-          myApp.popup('.login-popup');
-      },
+      }
   },
   computed: {
     isiOS () {

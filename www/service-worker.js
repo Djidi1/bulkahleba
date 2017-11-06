@@ -1,6 +1,6 @@
 // use a cacheName for cache versioning
-var cacheName = 'todos_offline_cache:v1'
-var goodCaches = [];
+let cacheName = 'todos_offline_cache:v1';
+let goodCaches = [];
 goodCaches.push(cacheName);
 goodCaches.push('CordovaAssets'); // For Cordova Plugin cachine when config.xml set to true
 
