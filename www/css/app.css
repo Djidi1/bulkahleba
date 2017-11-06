@@ -5,11 +5,19 @@ Your custom styles go here
     width: 100%;
 }
 
+/* Логотип для андроид */
+.center img {
+    vertical-align: sub;
+}
+
 /* Зачеркиваем купленное */
 .item-completed .item-title {
     text-decoration: line-through;
 }
 
+.page-content.login-screen-content {
+    margin-top: 42px;
+}
 
 /* Стиль блока покупок */
 .list-block.comleted-block {
@@ -22,11 +30,31 @@ Your custom styles go here
 .list-block.comleted-block ul {
     background: transparent;
 }
-.list-block.comleted-block ul:before, .list-block.comleted-block ul:after{
+.list-block.comleted-block ul:before, .list-block.comleted-block ul:after {
     display: none;
 }
-.page-content {
+.margins15 {
+    margin: 0 15px;
+}
+.margins_LR15 {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.list-block.main-block {
+    padding: 35px 0 10px 0;
+    margin: 0;
     background: #ffffff;
+}
+
+.list-block.pending-block {
+    padding: 0 0 35px 0;
+    margin: 0;
+    background: #ffffff;
+}
+
+
+.page-content {
+    background: #efeff6;
 }
 
 /* Разделитель покупок */

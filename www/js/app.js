@@ -20,6 +20,8 @@ window.store = {
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue);
 
+let myApp = new Framework7();
+
 // Init Page Components
 Vue.component('page-tabs', {
   template: '#page-tabs',
@@ -56,20 +58,6 @@ Vue.component('page-pending', {
       item: ''
     };
   },
-    // computed: {
-    //     sortedTodos: function() {
-    //         // function compare(a, b) {
-    //         //     if (a.title < b.title)
-    //         //         return -1;
-    //         //     if (a.title > b.title)
-    //         //         return 1;
-    //         //     return 0;
-    //         // }
-    //         //
-    //         // return this.todos.sort(compare);
-    //         return this.todos.reverse();
-    //     }
-    // },
   methods: {
     onItemDeleted (todo) {
       removeTodo(todo);
@@ -184,10 +172,49 @@ Vue.component('todo-item', {
   }
 });
 
-// Need to add this event or static text in pages will flash quickly
-window.addEventListener("load", function(event) {
-    myVue.isMounted = true;
+Vue.component('about-item', {
+  template: '#about-item',
+  name: 'about-item',
 });
+
+
+Vue.component('login-item', {
+  template: '#login-item',
+  name: 'login-item',
+  data () {
+    return {
+      id: '',
+      title: '',
+      category: '',
+      desc: '',
+      highlight: false,
+      urgent: false,
+      item: ''
+    }
+  },
+  methods: {
+    addNewTodo () {
+      this.item = {
+        id: Math.floor(Math.random() * 10000),
+        title: this.title,
+        category: this.category.length > 0 ? this.category.toUpperCase() : 'Без категории',
+        desc: this.desc,
+        highlight: this.highlight,
+        urgent: this.urgent,
+        completed: false
+      };
+      if (!this.title) {
+        this.$f7.alert('Что вы хотите купить?', 'Необходимо название');
+      } else {
+        addTodo(this.item);
+        this.$f7.closeModal();
+      }
+      this.title = ''; this.category = ''; this.desc = ''; this.highlight = false; this.urgent = false;
+    }
+  }
+});
+
+
 
 // Init App
 let myVue = new Vue({
@@ -210,10 +237,16 @@ let myVue = new Vue({
     };
   },
   methods: {
-    filterCategory (cat) {
-      this.isActive = true;
-      window.store.changeCategory(cat);
-    },      
+      filterCategory (cat) {
+          this.isActive = true;
+          window.store.changeCategory(cat);
+      },
+      openAbout () {
+          myApp.popup('.about-popup');
+      },
+      openLogin () {
+          myApp.popup('.login-popup');
+      },
   },
   computed: {
     isiOS () {
@@ -223,4 +256,10 @@ let myVue = new Vue({
       return window.isMaterial;
     }
   }
+});
+
+// Need to add this event or static text in pages will flash quickly
+window.addEventListener("load", function(event) {
+    console.log(event);
+    myVue.isMounted = true;
 });

@@ -78,6 +78,14 @@
                               :id="category"></f7-list-item>
             </f7-list-group>
         </f7-list>
+
+        <f7-list>
+            <f7-list-group>
+                <f7-list-item title="Параметры" group-title></f7-list-item>
+                <f7-list-button @click="openLogin" title="Войти"></f7-list-button>
+                <f7-list-button @click="openAbout" title="О программе"></f7-list-button>
+            </f7-list-group>
+        </f7-list>
     </f7-panel>
 
     <!-- Views-->
@@ -92,7 +100,7 @@
                     <f7-link icon="icon-bars" open-panel="side-panel"></f7-link>
                 </f7-nav-left>
                 <f7-nav-center>
-                    <img src="img/logo_title.png" height="34"/>
+                    <img src="img/logo_ios.png" height="34"/>
                 </f7-nav-center>
                 <f7-nav-right>
                     <f7-link icon-f7="add" open-popup="#todo-popup"></f7-link>
@@ -104,19 +112,28 @@
                 <!-- Make todo-item popup available to both tabs by including it here -->
                 <todo-item/>
             </f7-pages>
+
+            <!-- Login popup -->
+            <login-item></login-item>
+
+            <!-- About popup -->
+            <about-item></about-item>
+
+
         </f7-view>
     </f7-views>
 </div>
 
 <!-- Main Page Template (tabs) -->
 <template id="page-tabs">
-
     <f7-page id="mainPage" data-page="mainPage" tabbar-fixed :with-subnavbar="isMaterial">
         <f7-navbar sliding>
             <f7-nav-left>
                 <f7-link icon-f7="bars" open-panel="side-panel"></f7-link>
             </f7-nav-left>
-            <f7-nav-center>БулкаХлеба</f7-nav-center>
+            <f7-nav-center>
+                <img src="img/logo_android.png" height="34"/>
+            </f7-nav-center>
             <f7-nav-right>
                 <f7-link icon-f7="add" open-popup="#todo-popup"></f7-link>
             </f7-nav-right>
@@ -128,7 +145,7 @@
         </f7-toolbar>
 
         <f7-tabs>
-            <f7-tab id="pending" active>
+            <f7-tab id="pending" active class="bg-grey">
                 <page-pending/>
             </f7-tab>
             <f7-tab id="completed">
@@ -143,7 +160,7 @@
 <template id="page-pending">
     <f7-page>
 
-            <f7-list>
+            <f7-list class="main-block">
                 <f7-list-item>
                     <f7-grid no-gutter class="item-input-row">
                         <f7-col width="70">
@@ -157,10 +174,9 @@
                         </f7-col>
                     </f7-grid>
                 </f7-list-item>
+                <h1 class="margins15">{{ title_block }}:</h1>
             </f7-list>
-            <f7-block-title>{{ title_block }}</f7-block-title>
-             <!--<img src="img/logo.png" width="320" height="240">-->
-            <f7-list v-if="todos.length > 0">
+            <f7-list v-if="todos.length > 0" class="pending-block">
                 <f7-list-item v-for="(todo, key) in todos" :key="key" v-if="displayItem(todo)"
                               :checked="(todo.completed ? true : false)" :data-index="key"
                               @click="onToggle(todo,key)"
@@ -219,7 +235,7 @@
 
 <template id="todo-item">
     <f7-popup id="todo-popup" tablet-fullscreen>
-        <f7-block-title>Что купить</f7-block-title>
+        <h1 class="margins_LR15">Что купить?</h1>
         <f7-list form>
             <f7-list-item>
                 <f7-input type="text" v-model="title" placeholder="Название"/>
@@ -233,14 +249,66 @@
             <f7-list-item checkbox name="highlight" v-model="highlight" title="Выделить" :checked="highlight"></f7-list-item>
             <f7-list-item checkbox name="urgent" v-model="urgent" title="Важно!" :checked="urgent"></f7-list-item>
         </f7-list>
-        <f7-grid>
-            <f7-col>
-                <f7-button @click="addNewTodo()" color="green" class="btn" big raised fill>Записать</f7-button>
-            </f7-col>
-            <f7-col>
-                <f7-button @click="$f7.closeModal();" color="red" class="btn" big raised fill>Отменить</f7-button>
-            </f7-col>
-        </f7-grid>
+        <f7-block>
+            <f7-grid>
+                <f7-col>
+                    <f7-button @click="addNewTodo()" color="green" class="btn" big raised fill>Записать</f7-button>
+                </f7-col>
+                <f7-col>
+                    <f7-button @click="$f7.closeModal();" color="red" class="btn" big raised fill>Отменить</f7-button>
+                </f7-col>
+            </f7-grid>
+        </f7-block>
+    </f7-popup>
+</template>
+
+<template id="about-item">
+    <f7-popup class="about-popup">
+        <f7-block inner>
+            <h1>О приложении</h1>
+            <p>Приложение для быстрого и удобного составления списка покупок.</p>
+            <p>Ничего лишнего, только список, категории и возможность синхронизации/обмена списками покупок.</p>
+            <p>Вернуться <f7-link close-popup>назад</f7-link>.</p>
+        </f7-block>
+    </f7-popup>
+</template>
+
+<!-- Login Screen -->
+<template id="login-item"><!-- Login Screen -->
+    <f7-popup class="login-popup">
+        <f7-view>
+            <f7-navbar sliding v-if="$theme.ios">
+                <f7-nav-left>
+                    <f7-link icon="icon-back" close-popup text="Назад"></f7-link>
+                </f7-nav-left>
+                <f7-nav-center>
+                    <img src="img/logo_ios.png" height="34"/>
+                </f7-nav-center>
+                <f7-nav-right>
+                </f7-nav-right>
+            </f7-navbar>
+            <f7-pages>
+                <f7-page login-screen>
+                    <f7-login-screen-title>Войти</f7-login-screen-title>
+                    <f7-list form>
+                        <f7-list-item>
+                            <f7-label>Email</f7-label>
+                            <f7-input name="username" placeholder="Username" type="text"></f7-input>
+                        </f7-list-item>
+                        <f7-list-item>
+                            <f7-label>Пароль</f7-label>
+                            <f7-input name="password" type="password" placeholder="Password"></f7-input>
+                        </f7-list-item>
+                    </f7-list>
+                    <f7-list>
+                        <f7-list-button title="Войти" close-login-screen></f7-list-button>
+                        <f7-list-label>
+                            <p>Авторизация позволяет синхронизировать списки покупок на всех ваших устройствах.</p>
+                        </f7-list-label>
+                    </f7-list>
+                </f7-page>
+            </f7-pages>
+        </f7-view>
     </f7-popup>
 </template>
 
