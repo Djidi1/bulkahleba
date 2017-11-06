@@ -159,7 +159,11 @@
 <!-- Pending Todos Page Template -->
 <template id="page-pending">
     <f7-page>
-
+        <f7-list class="no-margin">
+            <f7-list-item>
+            <h2>{{ title_block }}:</h2>
+            </f7-list-item>
+        </f7-list>
             <f7-list class="main-block">
                 <f7-list-item>
                     <f7-grid no-gutter class="item-input-row">
@@ -174,7 +178,6 @@
                         </f7-col>
                     </f7-grid>
                 </f7-list-item>
-                <h1 class="margins15">{{ title_block }}:</h1>
             </f7-list>
             <f7-list v-if="todos.length > 0" class="pending-block">
                 <f7-list-item v-for="(todo, key) in todos" :key="key" v-if="displayItem(todo)"
@@ -213,8 +216,12 @@
 <!-- Completed Tab Template -->
 <template id="page-completed">
     <f7-page>
+        <f7-list class="no-margin">
+            <f7-list-item>
+                <h2>{{ title }}:</h2>
+            </f7-list-item>
+        </f7-list>
         <f7-block>
-            <f7-block-title>{{ title }}</f7-block-title>
             <f7-list v-if="todos.length > 0">
                 <f7-list-item v-for="(todo, key) in todos" :key="key"
                               :checked="(todo.completed ? true : false)"
