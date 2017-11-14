@@ -1,5 +1,5 @@
 // use a cacheName for cache versioning
-let cacheName = 'todos_offline_cache:v1';
+let cacheName = 'todos_offline_cache:v2';
 let goodCaches = [];
 goodCaches.push(cacheName);
 goodCaches.push('CordovaAssets'); // For Cordova Plugin cachine when config.xml set to true
@@ -41,6 +41,7 @@ self.addEventListener('install', function(e) {
                 '/lib/vue/vue.min.js', 
                 '/img/Default-Portrait.png',    
                 '/img/logo.png',
+                '/img/logo_ios.png',
                 '/img/icons/apple-touch-icon.png',
                 '/img/icons/mstile-150x150.png',
                 '/img/icons/safari-pinned-tab.svg',

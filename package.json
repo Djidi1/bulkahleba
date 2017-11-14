@@ -23,6 +23,7 @@
     "lodash.orderby": "^4.6.0",
     "org.apache.cordova.plugin.cache": "https://github.com/tiltshiftfocus/cordova-plugin-cache.git",
     "phonegap-plugin-service-worker": "git+https://github.com/phonegap/phonegap-plugin-service-worker.git",
+    "vue-resource": "^1.3.4",
     "xml2js": "^0.4.19"
   },
   "cordova": {

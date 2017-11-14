@@ -1,6 +1,6 @@
 // import _ from 'lodash.orderby';
 // window._ = require('lodash.orderby');
-
+socket = io.connect('https://bulka-hleba-auth-djidi.c9users.io/');
 // Set up some useful globals
 window.isMaterial = !window.Framework7.prototype.device.ios;
 window.isiOS = window.Framework7.prototype.device.ios;
@@ -19,6 +19,9 @@ window.store = {
 
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue);
+
+// Init http requests
+// Vue.use(VueResource);
 
 // Init Page Components
 Vue.component('page-tabs', {
@@ -175,40 +178,69 @@ Vue.component('about-item', {
   name: 'about-item',
 });
 
+Vue.component('register-item', {
+    template: '#register-item',
+    name: 'register-item',
+    data () {
+        return {
+            displayName: '',
+            username: '',
+            password: ''
+        }
+    },
+    methods: {
+        register_user () {
+            if (!this.username || !this.displayName || !this.password) {
+                this.$f7.alert('Заполните, пожалуйста, все поля.', 'Регистрация ');
+            } else {
+                let form_data = {
+                    "displayName": this.displayName,
+                    "email": this.username,
+                    "password": this.password
+                };
+                socket
+                    .emit('register', JSON.stringify(form_data))
+                    .on('registration_result', function (msg) {
+                        console.log("registration_result: " + JSON.stringify(msg));
+                    });
+            }
+        }
+    }
+});
 
 Vue.component('login-item', {
   template: '#login-item',
   name: 'login-item',
   data () {
     return {
-      id: '',
-      title: '',
-      category: '',
-      desc: '',
-      highlight: false,
-      urgent: false,
-      item: ''
+      username: '',
+      password: ''
     }
   },
   methods: {
-    addNewTodo () {
-      this.item = {
-        id: Math.floor(Math.random() * 10000),
-        title: this.title,
-        category: this.category.length > 0 ? this.category.toUpperCase() : 'Без категории',
-        desc: this.desc,
-        highlight: this.highlight,
-        urgent: this.urgent,
-        completed: false
-      };
-      if (!this.title) {
-        this.$f7.alert('Что вы хотите купить?', 'Необходимо название');
-      } else {
-        addTodo(this.item);
-        this.$f7.closeModal();
+      auth_user () {
+          if (!this.username) {
+              this.$f7.alert('Введите ваш логин и пароль.', 'Авторизация');
+          } else {
+              let form_data = {
+                  "username": this.username,
+                  "password": this.password
+              };
+              socket
+                  .emit('login', JSON.stringify(form_data))
+                  .on('auth_accept', function (msg) {
+                      localStorage.setItem('auth_data', JSON.stringify(msg));
+                      myVue._data.not_auth = false;
+                      myVue._data.user_name = msg.user;
+                  })
+                  .on('login_result', function (msg) {
+                      console.log("login_result: " + JSON.stringify(msg));
+                  });
+              // this.$http.post('https://bulka-hleba-auth-djidi.c9users.io/login', form_data).then((response) => {
+              //     console.log(response.data);
+              // });
+          }
       }
-      this.title = ''; this.category = ''; this.desc = ''; this.highlight = false; this.urgent = false;
-    }
   }
 });
 
@@ -228,6 +260,8 @@ let myVue = new Vue({
   },
   data () {
     return {
+      not_auth: true,
+      user_name: '',
       sharedState: window.store.state,
       categories: window.store.state.categories,
       item: '',
