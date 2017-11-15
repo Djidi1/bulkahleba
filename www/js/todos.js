@@ -10,7 +10,8 @@ const todoStorage = {
     return todos;
   },
   save (todos) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+      localStorage.setItem('todos_updated', new Date());
   },
   addCategories (todos) {
     todos.filter((todo) => {
