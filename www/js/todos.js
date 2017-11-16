@@ -2,52 +2,56 @@
 const STORAGE_KEY = 'pg-todos';
 // Set up initial set of todos and categories if any saved in local storage
 const todoStorage = {
-  categories: [],
-  fetch () {
-    const todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    // Read and store the categories found from the todos in localStorage for the side menu list
-    this.addCategories(todos); 
-    return todos;
-  },
-  save (todos) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-      localStorage.setItem('todos_updated', new Date());
-  },
-  addCategories (todos) {
-    todos.filter((todo) => {
-      if (this.categories.indexOf(todo.category.toUpperCase()) === -1) {
-        this.categories.push(todo.category.toUpperCase());
-      }
-    });
-  }
+    categories: [],
+    fetch() {
+        const todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        // Read and store the categories found from the todos in localStorage for the side menu list
+        this.addCategories(todos);
+        return todos;
+    },
+    save(todos) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+        localStorage.setItem('todos_updated', new Date());
+    },
+    addCategories(todos) {
+        todos.filter((todo) => {
+            if (this.categories.indexOf(todo.category.toUpperCase()) === -1) {
+                this.categories.push(todo.category.toUpperCase());
+            }
+        });
+    }
 };
 
-function updateTodo (todo, prevCat) {
-  // Need to find the index of the object with the matching id and then update it
-  // then use it again in the splice to trigger the deep update in the lists
-  let todoIndex = store.todos.findIndex(function (item) { return item.id === todo.id; });
-  if (todoIndex > -1) {
-    store.todos[todoIndex] = todo;
-    // Force the update in the list - need this line or the Vue.set command
-    // https://vuejs.org/v2/guide/list.html#Caveats
-    store.todos.splice(todoIndex, 1, todo);
-    if (todo.category !== prevCat) {
-      // Look for existence of the previous category and if not found in any others remove it
-      let prevIndex = store.todos.findIndex(function (item) { return item.category === prevCat; });
-      if (prevIndex === -1 && prevCat !== 'Без категории') {
-        let catIndex = store.state.categories.indexOf(prevCat.toUpperCase());
-        if (store.state.selectedCategory === prevCat) {
-          window.store.changeCategory('Все');
+function updateTodo(todo, prevCat) {
+    // Need to find the index of the object with the matching id and then update it
+    // then use it again in the splice to trigger the deep update in the lists
+    let todoIndex = store.todos.findIndex(function (item) {
+        return item.id === todo.id;
+    });
+    if (todoIndex > -1) {
+        store.todos[todoIndex] = todo;
+        // Force the update in the list - need this line or the Vue.set command
+        // https://vuejs.org/v2/guide/list.html#Caveats
+        store.todos.splice(todoIndex, 1, todo);
+        if (todo.category !== prevCat) {
+            // Look for existence of the previous category and if not found in any others remove it
+            let prevIndex = store.todos.findIndex(function (item) {
+                return item.category === prevCat;
+            });
+            if (prevIndex === -1 && prevCat !== 'Без категории') {
+                let catIndex = store.state.categories.indexOf(prevCat.toUpperCase());
+                if (store.state.selectedCategory === prevCat) {
+                    window.store.changeCategory('Все');
+                }
+                store.state.categories.splice(catIndex, 1);
+            }
+            // Look for existence of the new category and if not found add it to store
+            if (store.state.categories.indexOf(todo.category.toUpperCase()) === -1) {
+                store.state.categories.push(todo.category.toUpperCase());
+            }
         }
-        store.state.categories.splice(catIndex, 1);
-      }
-      // Look for existence of the new category and if not found add it to store
-      if (store.state.categories.indexOf(todo.category.toUpperCase()) === -1) {
-        store.state.categories.push(todo.category.toUpperCase());
-      }
+        saveTodosToLocalStorage();
     }
-    saveTodosToLocalStorage();
-  }
 }
 
 function addTodo(todo) {
@@ -77,22 +81,22 @@ function addTodo(todo) {
     saveTodosToLocalStorage();
 }
 
-function saveTodosToLocalStorage () {
-  todoStorage.save(store.todos);
+function saveTodosToLocalStorage() {
+    todoStorage.save(store.todos);
 }
 
-function removeTodo (todo) {
-  let idx = store.todos.indexOf(todo);
-  store.todos.splice(idx, 1);
-  let elem = document.getElementById(todo.category);
-  if (elem !== null) {
-    let catIndex = store.todos.indexOf(todo);
-    store.state.categories.splice(catIndex, 1);
-  }
-  saveTodosToLocalStorage();
+function removeTodo(todo) {
+    let idx = store.todos.indexOf(todo);
+    store.todos.splice(idx, 1);
+    let elem = document.getElementById(todo.category);
+    if (elem !== null) {
+        let catIndex = store.todos.indexOf(todo);
+        store.state.categories.splice(catIndex, 1);
+    }
+    saveTodosToLocalStorage();
 }
 
-function toggleTodo (key) {
-  store.todos[key].completed = !store.todos[key].completed;
-  saveTodosToLocalStorage();
+function toggleTodo(key) {
+    store.todos[key].completed = !store.todos[key].completed;
+    saveTodosToLocalStorage();
 }

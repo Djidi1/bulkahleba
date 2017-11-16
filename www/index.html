@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Security-Policy"
           content="default-src 'self' data: gap:  ws: 'unsafe-inline' https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline' ws://*; style-src 'self' 'unsafe-inline'; media-src *; connect-src *; img-src * data:">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-    <link rel="mask-icon" href="img/favicons/safari-pinned-tab.svg" color="gray">
+    <!--<link rel="mask-icon" href="img/favicons/safari-pinned-tab.svg" color="gray">-->
 
     <!-- Color of status bar, address bar, header bar color for Android -->
     <meta name="theme-color" content="#2196F3">
@@ -15,7 +15,7 @@
     <meta name="apple-mobile-web-app-title" content="БулкаХлеба">
 
     <!-- Need to handle all desired sizes for the following two (see Apple Docs for dimensions) -->
-    <link rel="apple-touch-icon" href="img/favicons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" href="img/favicons/apple-touch-icon-180x180.png">
 
     <link rel="apple-touch-startup-image" href="img/Default-Portrait.png">
     <!--<link rel="apple-touch-startup-image" href="img/Default-Portrait-736@3x.png" sizes="1242x2148">-->
@@ -47,7 +47,7 @@
     <title>БулкаХлеба</title>
 
     <!-- See js/init-styles.jswhere we load F7 style sheets based on platform -->
-    <link rel="stylesheet" href="css/app.css?v=0.2">
+    <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/framework7-icons.css">
 
 </head>
@@ -111,9 +111,9 @@
             </f7-navbar>
 
             <f7-pages>
-                <page-tabs/>
+                <page-tabs></page-tabs>
                 <!-- Make todo-item popup available to both tabs by including it here -->
-                <todo-item/>
+                <todo-item></todo-item>
             </f7-pages>
 
             <!-- Login popup -->
@@ -151,13 +151,13 @@
 
         <f7-tabs>
             <f7-tab id="pending" active class="bg-grey">
-                <page-pending/>
+                <page-pending></page-pending>
             </f7-tab>
             <f7-tab id="completed">
-                <page-completed/>
+                <page-completed></page-completed>
             </f7-tab>
         </f7-tabs>
-        <todo-item/>
+        <todo-item></todo-item>
     </f7-page>
 </template>
 
@@ -166,54 +166,54 @@
     <f7-page>
         <f7-list class="no-margin">
             <f7-list-item>
-            <h2>{{ title_block }}:</h2>
+                <h2>{{ title_block }}:</h2>
             </f7-list-item>
         </f7-list>
-            <f7-list class="main-block">
-                <f7-list-item>
-                    <f7-grid no-gutter class="item-input-row">
-                        <f7-col width="70">
-                            <f7-input type="text" v-model="title" @keyup.enter="addNewTodo()" ref="todo_input" placeholder="Название : количество " />
-                        </f7-col>
-                        <f7-col width="15">
-                            <f7-button @click="addHowMany()">:123</f7-button>
-                        </f7-col>
-                        <f7-col width="15">
-                            <f7-button @click="addNewTodo()"><i class="icon f7-icons">check</i></f7-button>
-                        </f7-col>
-                    </f7-grid>
-                </f7-list-item>
-            </f7-list>
-            <f7-list v-if="todos.length > 0" class="pending-block">
-                <f7-list-item v-for="(todo, key) in todos" :key="key" v-if="displayItem(todo)"
-                              :checked="(todo.completed ? true : false)" :data-index="key"
-                              @click="onToggle(todo,key)"
-                              :title="(todo.urgent ? '<b><font color=red>!!</font></b> ' + todo.title : todo.title)"
-                              :after="((typeof todo.quantity != 'undefined' && todo.quantity != '') ? '<span class=\'badge color-pink\'>'+todo.quantity+'</span>' : '')"
-                              :class="[(todo.completed ? 'item-completed' : '') + ' ' + (todo.highlight ? 'bg-yellow' : '')]" swipeout checkbox>
-                    <f7-swipeout-actions>
-                        <!--<f7-swipeout-button close @click="onItemEdited(todo)" color="green">Изменить</f7-swipeout-button>-->
-                        <f7-swipeout-button close @click="onItemDeleted(todo)" color="red"><i class="icon f7-icons">trash</i></f7-swipeout-button>
-                    </f7-swipeout-actions>
-                </f7-list-item>
-            </f7-list>
-            <div class="holder">
-                <div class="smallLine smallLine1"></div>
-                <div class="smallLine smallLine2"></div>
-            </div>
-            <f7-list v-if="todos.length > 0" class="comleted-block">
-                <f7-list-item v-for="(todo, key) in todos" :key="key" v-if="displayItemCompleted(todo)"
-                              :checked="(todo.completed ? true : false)" :data-index="key"
-                              @click="onToggle(todo,key)"
-                              :title="(todo.urgent ? '<b><font color=red>!!</font></b> ' + todo.title : todo.title)"
-                              :after="((typeof todo.quantity != 'undefined' && todo.quantity != '') ? '<span class=badge>'+todo.quantity+'</span>' : '')"
-                              :class="[(todo.completed ? 'item-completed' : '') + ' ' + (todo.highlight ? 'bg-yellow' : '')]" swipeout checkbox>
-                    <f7-swipeout-actions>
-                        <!--<f7-swipeout-button close @click="onItemEdited(todo)" color="green">Edit</f7-swipeout-button>-->
-                        <f7-swipeout-button close @click="onItemDeleted(todo)" color="red"><i class="icon f7-icons">trash</i></f7-swipeout-button>
-                    </f7-swipeout-actions>
-                </f7-list-item>
-            </f7-list>
+        <f7-list class="main-block">
+            <f7-list-item>
+                <f7-grid no-gutter class="item-input-row">
+                    <f7-col width="70">
+                        <f7-input type="text" v-model="title" @keyup.enter="addNewTodo()" ref="todo_input" placeholder="Название : количество "></f7-input>
+                    </f7-col>
+                    <f7-col width="15">
+                        <f7-button @click="addHowMany()">:123</f7-button>
+                    </f7-col>
+                    <f7-col width="15">
+                        <f7-button @click="addNewTodo()"><i class="icon f7-icons">check</i></f7-button>
+                    </f7-col>
+                </f7-grid>
+            </f7-list-item>
+        </f7-list>
+        <f7-list v-if="todos.length > 0" class="pending-block">
+            <f7-list-item v-for="(todo, key) in todos" :key="key" v-if="displayItem(todo)"
+                          :checked="(todo.completed ? true : false)" :data-index="key"
+                          @click="onToggle(todo,key)"
+                          :title="(todo.urgent ? '<b><font color=red>!!</font></b> ' + todo.title : todo.title)"
+                          :after="((typeof todo.quantity != 'undefined' && todo.quantity != '') ? '<span class=\'badge color-pink\'>'+todo.quantity+'</span>' : '')"
+                          :class="[(todo.completed ? 'item-completed' : '') + ' ' + (todo.highlight ? 'bg-yellow' : '')]" swipeout checkbox>
+                <f7-swipeout-actions>
+                    <!--<f7-swipeout-button close @click="onItemEdited(todo)" color="green">Изменить</f7-swipeout-button>-->
+                    <f7-swipeout-button close @click="onItemDeleted(todo)" color="red"><i class="icon f7-icons">trash</i></f7-swipeout-button>
+                </f7-swipeout-actions>
+            </f7-list-item>
+        </f7-list>
+        <div class="holder">
+            <div class="smallLine smallLine1"></div>
+            <div class="smallLine smallLine2"></div>
+        </div>
+        <f7-list v-if="todos.length > 0" class="comleted-block">
+            <f7-list-item v-for="(todo, key) in todos" :key="key" v-if="displayItemCompleted(todo)"
+                          :checked="(todo.completed ? true : false)" :data-index="key"
+                          @click="onToggle(todo,key)"
+                          :title="(todo.urgent ? '<b><font color=red>!!</font></b> ' + todo.title : todo.title)"
+                          :after="((typeof todo.quantity != 'undefined' && todo.quantity != '') ? '<span class=badge>'+todo.quantity+'</span>' : '')"
+                          :class="[(todo.completed ? 'item-completed' : '') + ' ' + (todo.highlight ? 'bg-yellow' : '')]" swipeout checkbox>
+                <f7-swipeout-actions>
+                    <!--<f7-swipeout-button close @click="onItemEdited(todo)" color="green">Edit</f7-swipeout-button>-->
+                    <f7-swipeout-button close @click="onItemDeleted(todo)" color="red"><i class="icon f7-icons">trash</i></f7-swipeout-button>
+                </f7-swipeout-actions>
+            </f7-list-item>
+        </f7-list>
 
     </f7-page>
 </template>
@@ -250,13 +250,13 @@
         <h1 class="margins_LR15">Что купить?</h1>
         <f7-list form>
             <f7-list-item>
-                <f7-input type="text" v-model="title" placeholder="Название"/>
+                <f7-input type="text" v-model="title" placeholder="Название"></f7-input>
             </f7-list-item>
             <f7-list-item>
-                <f7-input type="text" v-model="category" placeholder="Категория (Продукты, Хозтовары, ...)"/>
+                <f7-input type="text" v-model="category" placeholder="Категория (Продукты, Хозтовары, ...)"></f7-input>
             </f7-list-item>
             <f7-list-item>
-                <f7-input type="text" v-model="desc" placeholder="Описание"/>
+                <f7-input type="text" v-model="desc" placeholder="Описание"></f7-input>
             </f7-list-item>
             <f7-list-item checkbox name="highlight" v-model="highlight" title="Выделить" :checked="highlight"></f7-list-item>
             <f7-list-item checkbox name="urgent" v-model="urgent" title="Важно!" :checked="urgent"></f7-list-item>
@@ -280,7 +280,10 @@
             <h1>О приложении</h1>
             <p>Приложение для быстрого и удобного составления списка покупок.</p>
             <p>Ничего лишнего, только список, категории и возможность синхронизации/обмена списками покупок.</p>
-            <p>Вернуться <f7-link close-popup>назад</f7-link>.</p>
+            <p>Вернуться
+                <f7-link close-popup>назад</f7-link>
+                .
+            </p>
         </f7-block>
     </f7-popup>
 </template>
@@ -304,12 +307,15 @@
                 </f7-list-item>
             </f7-list>
             <f7-list>
-                <f7-list-button title="Зарегистрироваться" @click="register_user()" ></f7-list-button>
+                <f7-list-button title="Зарегистрироваться" @click="register_user()"></f7-list-button>
                 <f7-list-label>
                     <p>Регистрация позволяет синхронизировать списки покупок на всех ваших устройствах.</p>
                 </f7-list-label>
             </f7-list>
-            <p>Вернуться <f7-link close-popup>назад</f7-link>.</p>
+            <p>Вернуться
+                <f7-link close-popup>назад</f7-link>
+                .
+            </p>
         </f7-block>
     </f7-popup>
 </template>
@@ -342,7 +348,7 @@
                         </f7-list-item>
                     </f7-list>
                     <f7-list>
-                        <f7-list-button title="Войти" @click="auth_user()" ></f7-list-button>
+                        <f7-list-button title="Войти" @click="auth_user()"></f7-list-button>
                         <f7-list-label>
                             <p>Авторизация позволяет синхронизировать списки покупок на всех ваших устройствах.</p>
                         </f7-list-label>
