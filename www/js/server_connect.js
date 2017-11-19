@@ -33,7 +33,7 @@ const handler = () => {
                 if (+d_server < +d_client) {
                     updateServerList();
                 } else {
-                    let list = JSON.parse(msg.lists);
+                    let list = JSON.parse(msg.lists || "[]");
                     updateClientList(list);
                 }
             }
@@ -55,6 +55,11 @@ const handler = () => {
         })
         .on('registration_result', function (msg) {
             console.log("registration_result: " + JSON.stringify(msg));
+            if (typeof msg.email !== 'undefined'){
+                myVue.$f7.alert('Теперь вы можете войти в систему', 'Спасибо за регистрацию!', function (){
+                    myVue.$f7.closeModal();
+                });
+            }
         })
         .on('registration_error', function (msg) {
             console.log("registration_error: " + JSON.stringify(msg));

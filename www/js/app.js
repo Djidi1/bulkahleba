@@ -1,7 +1,10 @@
 // import _ from 'lodash.orderby';
 // window._ = require('lodash.orderby');
 let cacheName = 'bh_offline_cache:v0.1';
-socket = io.connect('https://bulka-hleba-auth-djidi.c9users.io/');
+
+let nodejs_server =  (location.hostname === "localhost" || location.hostname === "127.0.0.1") ? 'http://localhost:8080/' : 'https://bulka-hleba-auth-djidi.c9users.io/';
+socket = io.connect(nodejs_server);
+
 // Set up some useful globals
 window.isMaterial = !window.Framework7.prototype.device.ios;
 window.isiOS = window.Framework7.prototype.device.ios;
@@ -125,7 +128,7 @@ Vue.component('page-completed', {
             removeTodo(todo);
         },
         // Toggle completed status
-        onToggle(todo, key) {
+        onToggle(event, todo, key) {
             // Only do the toggle if the checkbox is specifically clicked, not the whole item itself as it could also be sliding over to do a delete
             if (event.srcElement.classList.contains('icon-form-checkbox') || event.srcElement.classList.contains('label-checkbox')) {
                 toggleTodo(key);
