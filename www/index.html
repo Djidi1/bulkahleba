@@ -86,6 +86,8 @@
                 <f7-list-item title="Параметры" group-title></f7-list-item>
                 <f7-list-button v-if="not_auth" open-login-screen title="Войти"></f7-list-button>
                 <f7-list-button v-if="not_auth" open-popup=".register-popup" title="Регистрация"></f7-list-button>
+                <f7-list-button v-if="!not_auth" @click="exit_from_app()" title="Выход"></f7-list-button>
+                <f7-list-button @click="clear_cache_app()" title="Очистить кэш"></f7-list-button>
                 <f7-list-button open-popup=".about-popup" title="О программе"></f7-list-button>
             </f7-list-group>
         </f7-list>
@@ -299,11 +301,11 @@
                 </f7-list-item>
                 <f7-list-item>
                     <f7-label>Email</f7-label>
-                    <f7-input name="username" v-model="username" placeholder="name@domain.com" type="text"></f7-input>
+                    <f7-input name="username" v-model="username" placeholder="name@domain.com" type="email"></f7-input>
                 </f7-list-item>
                 <f7-list-item>
                     <f7-label>Пароль</f7-label>
-                    <f7-input name="password" v-model="password" type="password" placeholder="Password"></f7-input>
+                    <f7-input name="password" v-model="password" type="password" placeholder="Password" autocomplete="off"></f7-input>
                 </f7-list-item>
             </f7-list>
             <f7-list>
@@ -361,9 +363,9 @@
 
 <!--<script src="cordova.js"></script> -->
 <script src="lib/framework7/js/framework7.min.js"></script>
-<script src="lib/vue/vue.min.js"></script>
+<!--<script src="lib/vue/vue.min.js"></script>-->
 <!-- Use this non-minified version for debugging with chrome vue tool -->
-<!--<script src="lib/vue/vue.js"></script>-->
+<script src="lib/vue/vue.js"></script>
 <script src="lib/framework7-vue/framework7-vue.min.js"></script>
 <script src="js/init-styles.js"></script>
 <script src="js/socket.io.js"></script>

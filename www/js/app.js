@@ -1,5 +1,6 @@
 // import _ from 'lodash.orderby';
 // window._ = require('lodash.orderby');
+let cacheName = 'bh_offline_cache:v0.1';
 socket = io.connect('https://bulka-hleba-auth-djidi.c9users.io/');
 // Set up some useful globals
 window.isMaterial = !window.Framework7.prototype.device.ios;
@@ -110,7 +111,7 @@ Vue.component('page-pending', {
 
 Vue.component('page-completed', {
     template: '#page-completed',
-    name: 'Купленные',
+    name: 'Completed',
     data() {
         return {
             title: 'Купленные',
@@ -198,15 +199,11 @@ Vue.component('register-item', {
                 this.$f7.alert('Заполните, пожалуйста, все поля.', 'Регистрация ');
             } else {
                 let form_data = {
-                    "displayName": this.displayName,
-                    "email": this.username,
+                    "displayName": this.displayName.trim(),
+                    "email": this.username.toLowerCase().trim(),
                     "password": this.password
                 };
-                socket
-                    .emit('register', JSON.stringify(form_data))
-                    .on('registration_result', function (msg) {
-                        console.log("registration_result: " + JSON.stringify(msg));
-                    });
+                socket.emit('register', JSON.stringify(form_data));
             }
         }
     }
@@ -230,16 +227,7 @@ Vue.component('login-item', {
                     "username": this.username,
                     "password": this.password
                 };
-                socket
-                    .emit('login', JSON.stringify(form_data))
-                    .on('auth_accept', function (msg) {
-                        localStorage.setItem('auth_data', JSON.stringify(msg));
-                        myVue._data.not_auth = false;
-                        myVue._data.user_name = msg.user;
-                    })
-                    .on('login_result', function (msg) {
-                        console.log("login_result: " + JSON.stringify(msg));
-                    });
+                socket.emit('login', JSON.stringify(form_data))
                 // this.$http.post('https://bulka-hleba-auth-djidi.c9users.io/login', form_data).then((response) => {
                 //     console.log(response.data);
                 // });
@@ -275,6 +263,14 @@ let myVue = new Vue({
         filterCategory(cat) {
             this.isActive = true;
             window.store.changeCategory(cat);
+        },
+        exit_from_app() {
+            myVue._data.not_auth = true;
+            myVue._data.user_name = 'Гость';
+            localStorage.removeItem('auth_data');
+        },
+        clear_cache_app() {
+            caches.delete(cacheName)
         }
     },
     computed: {

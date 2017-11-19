@@ -9,9 +9,12 @@ const todoStorage = {
         this.addCategories(todos);
         return todos;
     },
-    save(todos) {
+    save(todos, from_server) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
         localStorage.setItem('todos_updated', new Date());
+        if (!from_server) {
+            updateServerList();
+        }
     },
     addCategories(todos) {
         todos.filter((todo) => {
@@ -50,7 +53,7 @@ function updateTodo(todo, prevCat) {
                 store.state.categories.push(todo.category.toUpperCase());
             }
         }
-        saveTodosToLocalStorage();
+        saveTodosToLocalStorage(false);
     }
 }
 
@@ -77,12 +80,11 @@ function addTodo(todo) {
             store.state.categories.push(todo_new.category.toUpperCase());
         }
     });
-
-    saveTodosToLocalStorage();
+    saveTodosToLocalStorage(false);
 }
 
-function saveTodosToLocalStorage() {
-    todoStorage.save(store.todos);
+function saveTodosToLocalStorage(from_server) {
+    todoStorage.save(store.todos, from_server);
 }
 
 function removeTodo(todo) {
@@ -93,10 +95,10 @@ function removeTodo(todo) {
         let catIndex = store.todos.indexOf(todo);
         store.state.categories.splice(catIndex, 1);
     }
-    saveTodosToLocalStorage();
+    saveTodosToLocalStorage(false);
 }
 
 function toggleTodo(key) {
     store.todos[key].completed = !store.todos[key].completed;
-    saveTodosToLocalStorage();
+    saveTodosToLocalStorage(false);
 }
