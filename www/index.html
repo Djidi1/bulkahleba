@@ -14,6 +14,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="БулкаХлеба">
 
+    <link rel="shortcut icon" href="img/favicons/favicon.ico">
+
     <!-- Need to handle all desired sizes for the following two (see Apple Docs for dimensions) -->
     <link rel="apple-touch-icon" href="img/favicons/apple-touch-icon-180x180.png">
 
@@ -191,7 +193,7 @@
                           :checked="(todo.completed ? true : false)" :data-index="key"
                           @click="onToggle(todo,key)"
                           :title="(todo.urgent ? '<b><font color=red>!!</font></b> ' + todo.title : todo.title)"
-                          :after="((typeof todo.quantity != 'undefined' && todo.quantity != '') ? '<span class=\'badge color-pink\'>'+todo.quantity+'</span>' : '')"
+                          :after="((typeof todo.quantity != 'undefined' && todo.quantity != '') ? '<span class=\'badge color-pink\'>'+todo.quantity+'</span>' : '') + ('<span class=\'label color-grey\'>'+todo.category+'</span>')"
                           :class="[(todo.completed ? 'item-completed' : '') + ' ' + (todo.highlight ? 'bg-yellow' : '')]" swipeout checkbox>
                 <f7-swipeout-actions>
                     <!--<f7-swipeout-button close @click="onItemEdited(todo)" color="green">Изменить</f7-swipeout-button>-->
@@ -250,29 +252,31 @@
 <template id="todo-item">
     <f7-popup id="todo-popup" tablet-fullscreen>
         <h1 class="margins_LR15">Что купить?</h1>
-        <f7-list form>
-            <f7-list-item>
-                <f7-input type="text" v-model="title" placeholder="Название"></f7-input>
-            </f7-list-item>
-            <f7-list-item>
-                <f7-input type="text" v-model="category" placeholder="Категория (Продукты, Хозтовары, ...)"></f7-input>
-            </f7-list-item>
-            <f7-list-item>
-                <f7-input type="text" v-model="desc" placeholder="Описание"></f7-input>
-            </f7-list-item>
-            <f7-list-item checkbox name="highlight" v-model="highlight" title="Выделить" :checked="highlight"></f7-list-item>
-            <f7-list-item checkbox name="urgent" v-model="urgent" title="Важно!" :checked="urgent"></f7-list-item>
-        </f7-list>
-        <f7-block>
-            <f7-grid>
-                <f7-col>
-                    <f7-button @click="addNewTodo()" color="green" class="btn" big raised fill>Записать</f7-button>
-                </f7-col>
-                <f7-col>
-                    <f7-button @click="$f7.closeModal();" color="red" class="btn" big raised fill>Отменить</f7-button>
-                </f7-col>
-            </f7-grid>
-        </f7-block>
+        <div class="page-content">
+            <f7-list form>
+                <f7-list-item>
+                    <f7-input type="text" v-model="title" placeholder="Название"></f7-input>
+                </f7-list-item>
+                <f7-list-item>
+                    <f7-input type="text" v-model="category" placeholder="Категория (Продукты, Хозтовары, ...)"  id="autocomplete-category"></f7-input>
+                </f7-list-item>
+                <f7-list-item>
+                    <f7-input type="text" v-model="desc" placeholder="Описание"></f7-input>
+                </f7-list-item>
+                <f7-list-item checkbox name="highlight" v-model="highlight" title="Выделить" :checked="highlight"></f7-list-item>
+                <f7-list-item checkbox name="urgent" v-model="urgent" title="Важно!" :checked="urgent"></f7-list-item>
+            </f7-list>
+            <f7-block>
+                <f7-grid>
+                    <f7-col>
+                        <f7-button @click="addNewTodo();" color="green" class="btn" big raised fill>Записать</f7-button>
+                    </f7-col>
+                    <f7-col>
+                        <f7-button @click="$f7.closeModal();" color="red" class="btn" big raised fill>Отменить</f7-button>
+                    </f7-col>
+                </f7-grid>
+            </f7-block>
+        </div>
     </f7-popup>
 </template>
 

@@ -286,8 +286,29 @@ let myVue = new Vue({
     }
 });
 
+
+
 // Need to add this event or static text in pages will flash quickly
 window.addEventListener("load", function (event) {
     console.log(event);
     myVue.isMounted = true;
+    myVue.$f7.autocomplete({
+        input: '#autocomplete-category',
+        openIn: 'dropdown',
+        expandInput: true, // expand input
+        source: function (autocomplete, query, render) {
+            let categories = myVue._data.categories;
+            let results = [];
+            if (query.length === 0) {
+                render(results);
+                return;
+            }
+            // Find matched items
+            for (let i = 0; i < categories.length; i++) {
+                if (categories[i].toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(categories[i]);
+            }
+            // Render items by passing array with result items
+            render(results);
+        }
+    });
 });

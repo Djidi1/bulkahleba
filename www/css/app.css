@@ -87,3 +87,18 @@ DIV.no-margin h2 {
 .smallLine {
     background-size: 10px 10px;
 }
+span.label {
+    position: absolute;
+    right: 15px;
+    font-size: 60%;
+    color: #ffffff;
+    background: #607D8B;
+    padding: 0 4px;
+    border-radius: 3px;
+    bottom: 3px;
+}
+span.badge {
+    top: 4px;
+    position: absolute;
+    right: 15px;
+}
